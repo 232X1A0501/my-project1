@@ -160,6 +160,7 @@
             font-weight: 600;
         }
 
+        /* Color coding for different categories */
         .classroom { background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); }
         .seminar { background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%); }
         .gallery { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
@@ -167,8 +168,9 @@
         .staff { background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%); }
         .restroom { background: linear-gradient(135deg, #a3bded 0%, #6991c7 100%); }
         .library { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); }
-        .canteen { background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%); }
+        .director { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
         .vice-principal { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .canteen { background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%); }
 
         .details-page {
             display: none;
@@ -187,6 +189,58 @@
             cursor: pointer;
             margin-bottom: 15px;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .room-details {
+            margin-top: 20px;
+        }
+
+        .detail-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .room-title {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .room-location {
+            color: var(--text-light);
+            font-size: 16px;
+        }
+
+        .navigation-path {
+            background: #fff3cd;
+            border: 2px dashed #ff5722;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .path-step {
+            margin: 10px 0;
+            padding: 8px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .map-placeholder {
+            background: linear-gradient(135deg, #e0e0e0, #f5f5f5);
+            height: 200px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            margin: 20px 0;
+            border: 2px solid #ddd;
         }
 
         .quick-info {
@@ -207,37 +261,37 @@
             border-bottom: none;
         }
 
-        .navigation-path {
-            background: #fff3cd;
-            border: 2px dashed #ff5722;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 20px 0;
-        }
-
-        .path-step {
-            margin: 10px 0;
-            padding: 8px;
-            background: white;
-            border-radius: 8px;
-            border-left: 4px solid var(--accent);
-        }
-
-        .map-placeholder {
-            background: #f0f0f0;
-            height: 200px;
-            border-radius: 10px;
+        .gender-options {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-            margin: 20px 0;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .gender-btn {
+            flex: 1;
+            padding: 12px;
             border: 2px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .gender-btn.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .gender-btn:hover {
+            border-color: var(--primary);
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Main Page -->
         <div id="mainPage">
             <div class="header">
                 <div class="college-name">HINDU COLLEGE OF ENGINEERING AND TECHNOLOGY</div>
@@ -291,6 +345,7 @@
             </div>
         </div>
 
+        <!-- Details Page -->
         <div id="detailsPage" class="details-page">
             <button class="back-button" onclick="showMainPage()">← Back to Search</button>
             <div id="detailsContent"></div>
@@ -298,140 +353,298 @@
     </div>
 
     <script>
+        // Complete campus database based on your images
         const campusDatabase = [
-            { code: "CG01", name: "Board Room", block: "C-Block", floor: "Ground Floor", type: "seminar" },
-            { code: "CG02", name: "Computer Lab", block: "C-Block", floor: "Ground Floor", type: "lab" },
-            { code: "CG03", name: "HD Lab", block: "C-Block", floor: "Ground Floor", type: "lab" },
-            { code: "CG04", name: "HD Lab", block: "C-Block", floor: "Ground Floor", type: "lab" },
-            { code: "CG05", name: "Director Room", block: "C-Block", floor: "Ground Floor", type: "vice-principal" },
-            { code: "CG07", name: "Library", block: "C-Block", floor: "Ground Floor", type: "library" },
-            { code: "CG08", name: "Library", block: "C-Block", floor: "Ground Floor", type: "library" },
-            { code: "CF-1/2", name: "Ladies Washroom", block: "C-Block", floor: "Ground Floor", type: "restroom", gender: "female" },
-            { code: "CF01", name: "Classroom", block: "C-Block", floor: "1st Floor", type: "classroom" },
-            { code: "CF02", name: "Classroom", block: "C-Block", floor: "1st Floor", type: "classroom" },
-            { code: "CF03", name: "Classroom", block: "C-Block", floor: "1st Floor", type: "classroom" },
-            { code: "CF04", name: "Classroom", block: "C-Block", floor: "1st Floor", type: "classroom" },
-            { code: "CF06", name: "Emergency Room", block: "C-Block", floor: "1st Floor", type: "staff" },
-            { code: "CF07", name: "B-Tech Staff Room", block: "C-Block", floor: "1st Floor", type: "staff" },
-            { code: "CF08", name: "B-Tech Staff Room", block: "C-Block", floor: "1st Floor", type: "staff" },
-            { code: "CF09", name: "Classroom", block: "C-Block", floor: "1st Floor", type: "classroom" },
-            { code: "CF10", name: "Classroom", block: "C-Block", floor: "1st Floor", type: "classroom" },
-            { code: "CF-11", name: "Ladies Washroom", block: "C-Block", floor: "1st Floor", type: "restroom", gender: "female" },
-            { code: "CS-11", name: "Drawing Hall", block: "C-Block", floor: "2nd Floor", type: "lab" },
-            { code: "CS-10", name: "Classroom", block: "C-Block", floor: "2nd Floor", type: "classroom" },
-            { code: "CS-09", name: "Classroom", block: "C-Block", floor: "2nd Floor", type: "classroom" },
-            { code: "CS08", name: "Tutorial Room", block: "C-Block", floor: "2nd Floor", type: "seminar" },
-            { code: "CS03", name: "Computer Lab", block: "C-Block", floor: "2nd Floor", type: "lab" },
-            { code: "CS02", name: "Computer Lab", block: "C-Block", floor: "2nd Floor", type: "lab" },
-            { code: "DF01", name: "Classroom", block: "D-Block", floor: "1st Floor", type: "classroom" },
-            { code: "DF02", name: "Classroom", block: "D-Block", floor: "1st Floor", type: "classroom" },
-            { code: "DF03", name: "Gallery Hall", block: "D-Block", floor: "1st Floor", type: "gallery" },
-            { code: "DB-MEN", name: "Men's Washroom", block: "D-Block", floor: "1st Floor", type: "restroom", gender: "male", description: "Beside Gallery Hall" },
-            { code: "DS01", name: "Classroom", block: "D-Block", floor: "2nd Floor", type: "classroom" },
-            { code: "DS02", name: "Classroom", block: "D-Block", floor: "2nd Floor", type: "classroom" },
-            { code: "DS03", name: "Classroom", block: "D-Block", floor: "2nd Floor", type: "classroom" },
-            { code: "EG01", name: "Vice Principal Room", block: "E-Block", floor: "Ground Floor", type: "vice-principal" },
-            { code: "EG02", name: "Orientation Room", block: "E-Block", floor: "Ground Floor", type: "seminar" },
-            { code: "EF01", name: "Classroom", block: "E-Block", floor: "1st Floor", type: "classroom" },
-            { code: "EF02", name: "Gallery Hall", block: "E-Block", floor: "1st Floor", type: "gallery" },
-            { code: "ES01", name: "Classroom", block: "E-Block", floor: "2nd Floor", type: "classroom" },
-            { code: "ES02", name: "Classroom", block: "E-Block", floor: "2nd Floor", type: "classroom" },
-            { code: "ES03H", name: "Classroom", block: "E-Block", floor: "2nd Floor", type: "classroom" },
-            { code: "ES03", name: "S & H Department Staff Room", block: "E-Block", floor: "2nd Floor", type: "staff" },
-            { code: "CANTEEN", name: "College Canteen", block: "Main Campus", floor: "Ground Floor", type: "canteen", description: "Near main gate beside parking area" },
-            { code: "SUDHARMA", name: "Sudharma Seminar Hall", block: "Main Campus", floor: "Ground Floor", type: "seminar", description: "Beside canteen near main gate" }
+            // C-Block Ground Floor
+            { code: "CG01", name: "Board Room", block: "C-Block", floor: "Ground Floor", type: "seminar", category: "Meeting Room" },
+            { code: "CG02", name: "Computer Lab", block: "C-Block", floor: "Ground Floor", type: "lab", category: "Laboratory" },
+            { code: "CG03", name: "HD Lab", block: "C-Block", floor: "Ground Floor", type: "lab", category: "Laboratory" },
+            { code: "CG04", name: "HD Lab", block: "C-Block", floor: "Ground Floor", type: "lab", category: "Laboratory" },
+            { code: "CG05", name: "Director Room", block: "C-Block", floor: "Ground Floor", type: "director", category: "Administration" },
+            { code: "CG07", name: "Library", block: "C-Block", floor: "Ground Floor", type: "library", category: "Library" },
+            { code: "CG08", name: "Library", block: "C-Block", floor: "Ground Floor", type: "library", category: "Library" },
+            { code: "CF-1/2", name: "Ladies Washroom", block: "C-Block", floor: "Ground Floor", type: "restroom", category: "Restroom", gender: "female" },
+
+            // C-Block First Floor
+            { code: "CF01", name: "Classroom", block: "C-Block", floor: "1st Floor", type: "classroom", category: "Classroom" },
+            { code: "CF02", name: "Classroom", block: "C-Block", floor: "1st Floor", type: "classroom", category: "Classroom" },
+            { code: "CF03", name: "Classroom", block: "C-Block", floor: "1st Floor", type: "classroom", category: "Classroom" },
+            { code: "CF04", name: "Classroom", block: "C-Block", floor: "1st Floor", type: "classroom", category: "Classroom" },
+            { code: "CF06", name: "Emergency Room", block: "C-Block", floor: "1st Floor", type: "staff", category: "Medical" },
+            { code: "CF07", name: "B-Tech Staff Room", block: "C-Block", floor: "1st Floor", type: "staff", category: "Staff Room" },
+            { code: "CF08", name: "B-Tech Staff Room", block: "C-Block", floor: "1st Floor", type: "staff", category: "Staff Room" },
+            { code: "CF09", name: "Classroom", block: "C-Block", floor: "1st Floor", type: "classroom", category: "Classroom" },
+            { code: "CF10", name: "Classroom", block: "C-Block", floor: "1st Floor", type: "classroom", category: "Classroom" },
+            { code: "CF-11", name: "Ladies Washroom", block: "C-Block", floor: "1st Floor", type: "restroom", category: "Restroom", gender: "female" },
+
+            // C-Block Second Floor
+            { code: "CS-11", name: "Drawing Hall", block: "C-Block", floor: "2nd Floor", type: "lab", category: "Laboratory" },
+            { code: "CS-10", name: "Classroom", block: "C-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "CS-09", name: "Classroom", block: "C-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "CS08", name: "Tutorial Room", block: "C-Block", floor: "2nd Floor", type: "seminar", category: "Study Room" },
+            { code: "CS03", name: "Computer Lab", block: "C-Block", floor: "2nd Floor", type: "lab", category: "Laboratory" },
+            { code: "CS02", name: "Computer Lab", block: "C-Block", floor: "2nd Floor", type: "lab", category: "Laboratory" },
+
+            // D-Block First Floor
+            { code: "DF01", name: "Classroom", block: "D-Block", floor: "1st Floor", type: "classroom", category: "Classroom" },
+            { code: "DF02", name: "Classroom", block: "D-Block", floor: "1st Floor", type: "classroom", category: "Classroom" },
+            { code: "DF03", name: "Gallery Hall", block: "D-Block", floor: "1st Floor", type: "gallery", category: "Gallery" },
+            { code: "DB-MEN", name: "Men's Washroom", block: "D-Block", floor: "1st Floor", type: "restroom", category: "Restroom", gender: "male", description: "Beside Gallery Hall on 1st Floor" },
+
+            // D-Block Second Floor
+            { code: "DS01", name: "Classroom", block: "D-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "DS02", name: "Classroom", block: "D-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "DS03", name: "Classroom", block: "D-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+
+            // E-Block Ground Floor
+            { code: "EG01", name: "Vice Principal Room", block: "E-Block", floor: "Ground Floor", type: "vice-principal", category: "Administration" },
+            { code: "EG02", name: "Orientation Room", block: "E-Block", floor: "Ground Floor", type: "seminar", category: "Seminar Hall" },
+
+            // E-Block First Floor
+            { code: "EF01", name: "Classroom", block: "E-Block", floor: "1st Floor", type: "classroom", category: "Classroom" },
+            { code: "EF02", name: "Gallery Hall", block: "E-Block", floor: "1st Floor", type: "gallery", category: "Gallery" },
+
+            // E-Block Second Floor
+            { code: "ES01", name: "Classroom", block: "E-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "ES02", name: "Classroom", block: "E-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "ES03H", name: "Classroom", block: "E-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "ES03", name: "S & H Department Staff Room", block: "E-Block", floor: "2nd Floor", type: "staff", category: "Staff Room" },
+
+            // Additional Important Locations
+            { code: "CANTEEN", name: "College Canteen", block: "Main Campus", floor: "Ground Floor", type: "canteen", category: "Food Court", description: "Near main gate beside parking area" },
+            { code: "SUDHARMA", name: "Sudharma Seminar Hall", block: "Main Campus", floor: "Ground Floor", type: "seminar", category: "Seminar Hall", description: "Beside canteen near main gate" }
         ];
 
+        // Search functionality
         const searchInput = document.getElementById('searchInput');
         const searchResults = document.getElementById('searchResults');
 
         searchInput.addEventListener('input', function(e) {
             const searchTerm = e.target.value.toLowerCase().trim();
+            
             if (searchTerm.length === 0) {
                 searchResults.style.display = 'none';
                 return;
             }
+
             const filteredResults = campusDatabase.filter(room => 
                 room.code.toLowerCase().includes(searchTerm) ||
                 room.name.toLowerCase().includes(searchTerm) ||
-                room.block.toLowerCase().includes(searchTerm)
+                room.block.toLowerCase().includes(searchTerm) ||
+                room.type.toLowerCase().includes(searchTerm) ||
+                room.category.toLowerCase().includes(searchTerm)
             );
+
             displaySearchResults(filteredResults);
         });
 
         function displaySearchResults(results) {
             if (results.length === 0) {
-                searchResults.innerHTML = '<div class="result-item">No rooms found</div>';
+                searchResults.innerHTML = '<div class="result-item">No rooms found. Try another search.</div>';
             } else {
                 searchResults.innerHTML = results.map(room => `
                     <div class="result-item" onclick="showRoomDetails('${room.code}')">
                         <div class="room-code">${room.code} - ${room.name}</div>
-                        <div class="room-desc">${room.block} • ${room.floor}</div>
+                        <div class="room-desc">${room.block} • ${room.floor} • ${room.category}</div>
                     </div>
                 `).join('');
             }
             searchResults.style.display = 'block';
         }
 
+        // Hide search results when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!searchContainer.contains(e.target)) {
+                searchResults.style.display = 'none';
+            }
+        });
+
         function showRoomDetails(roomCode) {
             const room = campusDatabase.find(r => r.code === roomCode);
             if (!room) return;
+
             const detailsContent = document.getElementById('detailsContent');
+            
+            const navigationSteps = generateNavigationSteps(room);
+            
             detailsContent.innerHTML = `
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <div style="font-size: 24px; color: var(--primary); margin-bottom: 5px;">${room.code} - ${room.name}</div>
-                    <div style="color: var(--text-light);">${room.block} • ${room.floor}</div>
+                <div class="detail-header">
+                    <div class="room-title">${room.code} - ${room.name}</div>
+                    <div class="room-location">${room.block} • ${room.floor}</div>
                 </div>
+
                 <div class="quick-info">
-                    <div class="info-item"><span>Block:</span><span>${room.block}</span></div>
-                    <div class="info-item"><span>Floor:</span><span>${room.floor}</span></div>
-                    <div class="info-item"><span>Type:</span><span>${room.type}</span></div>
-                    ${room.description ? `<div class="info-item"><span>Location:</span><span>${room.description}</span></div>` : ''}
+                    <div class="info-item">
+                        <span>Room Type:</span>
+                        <span>${room.category}</span>
+                    </div>
+                    <div class="info-item">
+                        <span>Block:</span>
+                        <span>${room.block}</span>
+                    </div>
+                    <div class="info-item">
+                        <span>Floor:</span>
+                        <span>${room.floor}</span>
+                    </div>
+                    <div class="info-item">
+                        <span>Category:</span>
+                        <span>${room.type}</span>
+                    </div>
+                    ${room.description ? `
+                    <div class="info-item">
+                        <span>Location:</span>
+                        <span>${room.description}</span>
+                    </div>
+                    ` : ''}
                 </div>
+
                 <div class="navigation-path">
                     <h3>🚦 Navigation Path</h3>
-                    <div class="path-step">📍 Start from Main Entrance</div>
-                    ${room.block === "Main Campus" ? 
-                        `<div class="path-step">🚶‍♂️ Walk straight from main gate</div>
-                         <div class="path-step">🅿️ Turn towards parking area</div>
-                         ${room.code === "CANTEEN" ? 
-                           '<div class="path-step">🍽️ Canteen is beside parking area</div>' : 
-                           '<div class="path-step">🎤 Sudharma Hall is beside canteen</div>'
-                         }` : 
-                        `<div class="path-step">🚶‍♂️ Walk to ${room.block}</div>
-                         <div class="path-step">📶 Go to ${room.floor}</div>
-                         <div class="path-step">🎯 Look for ${room.code}</div>`
-                    }
-                    <div class="path-step">✅ You have reached your destination!</div>
+                    ${navigationSteps.map(step => `<div class="path-step">${step}</div>`).join('')}
                 </div>
+
                 <div class="map-placeholder">
-                    🗺️ Navigation Map<br>
-                    <small>Path to ${room.code}</small>
+                    🗺️ Visual Navigation Map<br>
+                    <small>Red line showing path to ${room.code}</small>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px; color: var(--text-light);">
+                    📍 Follow the red markers and signs to reach your destination
                 </div>
             `;
+
             document.getElementById('mainPage').style.display = 'none';
             document.getElementById('detailsPage').style.display = 'block';
             searchResults.style.display = 'none';
+            searchInput.value = '';
+        }
+
+        function generateNavigationSteps(room) {
+            const steps = [];
+            
+            // Entry point steps
+            steps.push("📍 Start from Main Entrance");
+            
+            // Special locations near main gate
+            if (room.code === "CANTEEN" || room.code === "SUDHARMA") {
+                steps.push("🚶‍♂️ Walk straight from main gate");
+                steps.push("🅿️ Turn towards parking area");
+                if (room.code === "CANTEEN") {
+                    steps.push("🍽️ Canteen is located beside parking area");
+                } else {
+                    steps.push("🎤 Sudharma Seminar Hall is beside canteen");
+                }
+                steps.push("✅ You have reached your destination!");
+                return steps;
+            }
+            
+            // Block specific directions
+            if (room.block === "C-Block") {
+                steps.push("🚶‍♂️ Walk straight for 50 meters");
+                steps.push("↪️ Turn right at the central corridor");
+                steps.push("🏛️ Enter C-Block building");
+            } else if (room.block === "D-Block") {
+                steps.push("🚶‍♂️ Walk straight for 30 meters");
+                steps.push("↩️ Turn left at the fountain");
+                steps.push("🏛️ Enter D-Block building");
+                
+                // Special direction for D-Block men's washroom
+                if (room.code === "DB-MEN") {
+                    steps.push("📶 Go to 1st Floor");
+                    steps.push("📍 Located beside Gallery Hall (DF03)");
+                }
+            } else if (room.block === "E-Block") {
+                steps.push("🚶‍♂️ Walk straight for 70 meters");
+                steps.push("↪️ Turn right after C-Block");
+                steps.push("🏛️ Enter E-Block building");
+            }
+
+            // Floor specific directions
+            if (room.floor === "1st Floor") {
+                if (room.block !== "D-Block" || room.code !== "DB-MEN") {
+                    steps.push("📶 Take staircase or lift to 1st Floor");
+                }
+            } else if (room.floor === "2nd Floor") {
+                steps.push("📶 Take staircase or lift to 2nd Floor");
+            }
+
+            // Final approach
+            if (room.code === "DB-MEN") {
+                steps.push("🎯 Men's washroom is located beside the Gallery Hall");
+            } else if (room.code === "CF-11") {
+                steps.push("🎯 Ladies washroom is on the 1st Floor corridor");
+            } else if (room.code === "CF-1/2") {
+                steps.push("🎯 Ladies washroom is on the Ground Floor near entrance");
+            } else {
+                steps.push(`🎯 Look for ${room.code} on the ${room.floor}`);
+            }
+            steps.push("✅ You have reached your destination!");
+
+            return steps;
         }
 
         function showCategory(category) {
-            const categoryRooms = campusDatabase.filter(room => room.type === category);
             const detailsContent = document.getElementById('detailsContent');
-            let html = `<h2>${category.charAt(0).toUpperCase() + category.slice(1)}</h2>`;
+            
             if (category === 'restroom') {
-                html += `<div style="display: flex; gap: 10px; margin: 15px 0;">
-                    <button onclick="showGenderRestrooms('male')" style="flex:1; padding:12px; border:2px solid #ddd; border-radius:10px; background:white; cursor:pointer;">🚹 Men</button>
-                    <button onclick="showGenderRestrooms('female')" style="flex:1; padding:12px; border:2px solid #ddd; border-radius:10px; background:white; cursor:pointer;">🚺 Women</button>
-                </div>`;
-            } else {
-                categoryRooms.forEach(room => {
-                    html += `<div class="result-item" onclick="showRoomDetails('${room.code}')">
-                        <div class="room-code">${room.code} - ${room.name}</div>
-                        <div class="room-desc">${room.block} • ${room.floor}</div>
-                    </div>`;
-                });
+                showRestroomSelection();
+                return;
             }
+
+            const categoryRooms = campusDatabase.filter(room => room.type === category);
+            
+            let html = `<h2>${getCategoryName(category)}</h2>`;
+            
+            if (categoryRooms.length === 0) {
+                html += `<p style="text-align: center; color: var(--text-light); margin: 20px 0;">
+                    No ${getCategoryName(category)} found in the database.
+                </p>`;
+            } else {
+                // Group by block
+                const blocks = {};
+                categoryRooms.forEach(room => {
+                    if (!blocks[room.block]) blocks[room.block] = [];
+                    blocks[room.block].push(room);
+                });
+
+                for (const [blockName, rooms] of Object.entries(blocks)) {
+                    html += `<div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                        <h3 style="color: var(--primary); margin-bottom: 10px;">${blockName}</h3>`;
+                    
+                    rooms.forEach(room => {
+                        html += `<div class="result-item" onclick="showRoomDetails('${room.code}')" style="margin: 5px 0;">
+                            <div class="room-code">${room.code} - ${room.name}</div>
+                            <div class="room-desc">${room.floor}</div>
+                            ${room.description ? `<div class="room-desc">📍 ${room.description}</div>` : ''}
+                        </div>`;
+                    });
+                    
+                    html += `</div>`;
+                }
+            }
+            
             detailsContent.innerHTML = html;
+            document.getElementById('mainPage').style.display = 'none';
+            document.getElementById('detailsPage').style.display = 'block';
+        }
+
+        function showRestroomSelection() {
+            const detailsContent = document.getElementById('detailsContent');
+            
+            detailsContent.innerHTML = `
+                <h2>🚻 Restrooms</h2>
+                <p style="text-align: center; color: var(--text-light); margin-bottom: 20px;">Select restroom type:</p>
+                
+                <div class="gender-options">
+                    <div class="gender-btn" onclick="showGenderRestrooms('male')">
+                        🚹 Men's Restroom
+                    </div>
+                    <div class="gender-btn" onclick="showGenderRestrooms('female')">
+                        🚺 Women's Restroom
+                    </div>
+                </div>
+            `;
+
             document.getElementById('mainPage').style.display = 'none';
             document.getElementById('detailsPage').style.display = 'block';
         }
@@ -439,27 +652,50 @@
         function showGenderRestrooms(gender) {
             const genderRooms = campusDatabase.filter(room => room.type === 'restroom' && room.gender === gender);
             const detailsContent = document.getElementById('detailsContent');
+            
             let html = `<h2>${gender === 'male' ? '🚹 Men' : '🚺 Women'}'s Restrooms</h2>`;
-            genderRooms.forEach(room => {
-                html += `<div class="result-item" onclick="showRoomDetails('${room.code}')">
-                    <div class="room-code">${room.code} - ${room.name}</div>
-                    <div class="room-desc">${room.block} • ${room.floor}</div>
-                    ${room.description ? `<div class="room-desc">📍 ${room.description}</div>` : ''}
-                </div>`;
-            });
+            
+            if (genderRooms.length === 0) {
+                html += `<p style="text-align: center; color: var(--text-light); margin: 20px 0;">
+                    No ${gender} restrooms found in the database.
+                </p>`;
+            } else {
+                genderRooms.forEach(room => {
+                    html += `<div class="result-item" onclick="showRoomDetails('${room.code}')" style="margin: 10px 0;">
+                        <div class="room-code">${room.code} - ${room.name}</div>
+                        <div class="room-desc">${room.block} • ${room.floor}</div>
+                        ${room.description ? `<div class="room-desc">📍 ${room.description}</div>` : ''}
+                    </div>`;
+                });
+            }
+            
             detailsContent.innerHTML = html;
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                'classroom': 'Classrooms',
+                'seminar': 'Seminar & Meeting Rooms',
+                'gallery': 'Gallery Halls',
+                'lab': 'Laboratories',
+                'staff': 'Staff Rooms',
+                'restroom': 'Restrooms',
+                'library': 'Library',
+                'director': 'Director & Administration',
+                'vice-principal': 'Vice Principal',
+                'canteen': 'Canteen & Food Court'
+            };
+            return names[category] || category;
         }
 
         function showMainPage() {
             document.getElementById('mainPage').style.display = 'block';
             document.getElementById('detailsPage').style.display = 'none';
+            searchResults.style.display = 'none';
+            searchInput.value = '';
         }
 
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.search-container')) {
-                searchResults.style.display = 'none';
-            }
-        });
+        const searchContainer = document.querySelector('.search-container');
     </script>
 </body>
 </html>
