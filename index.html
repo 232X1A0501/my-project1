@@ -171,6 +171,8 @@
         .director { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
         .vice-principal { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
         .canteen { background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%); }
+        .admin { background: linear-gradient(135deg, #fdbb2d 0%, #22c1c3 100%); }
+        .workshop { background: linear-gradient(135deg, #FFA500 0%, #FF6347 100%); }
 
         .details-page {
             display: none;
@@ -338,9 +340,9 @@
                     <div class="icon">🍽️</div>
                     <div class="icon-label">Canteen</div>
                 </div>
-                <div class="icon-card vice-principal" onclick="showCategory('vice-principal')">
-                    <div class="icon">👩‍💼</div>
-                    <div class="icon-label">Vice Principal</div>
+                <div class="icon-card admin" onclick="showCategory('admin')">
+                    <div class="icon">🏢</div>
+                    <div class="icon-label">Administration</div>
                 </div>
             </div>
         </div>
@@ -353,8 +355,62 @@
     </div>
 
     <script>
-        // Complete campus database based on your images
+        // Complete campus database with all corrections
         const campusDatabase = [
+            // A-Block Ground Floor (MBA & MCA)
+            { code: "AG14", name: "Principal Room", block: "A-Block", floor: "Ground Floor", type: "admin", category: "Administration" },
+            { code: "AG15", name: "Principal Room", block: "A-Block", floor: "Ground Floor", type: "admin", category: "Administration" },
+            { code: "AG12", name: "Krishna Room", block: "A-Block", floor: "Ground Floor", type: "staff", category: "Staff Room" },
+            { code: "AG13", name: "Krishna Room", block: "A-Block", floor: "Ground Floor", type: "staff", category: "Staff Room" },
+            { code: "AG20", name: "Classroom", block: "A-Block", floor: "Ground Floor", type: "classroom", category: "Classroom" },
+            { code: "AG25", name: "Classroom", block: "A-Block", floor: "Ground Floor", type: "classroom", category: "Classroom" },
+            { code: "AG26", name: "Classroom", block: "A-Block", floor: "Ground Floor", type: "classroom", category: "Classroom" },
+            { code: "AG04", name: "HOD and Faculty Room (MBA)", block: "A-Block", floor: "Ground Floor", type: "staff", category: "Staff Room" },
+            { code: "AG05", name: "HOD and Faculty Room (MCA)", block: "A-Block", floor: "Ground Floor", type: "staff", category: "Staff Room" },
+            { code: "AG06", name: "HOD and Faculty Room", block: "A-Block", floor: "Ground Floor", type: "staff", category: "Staff Room" },
+            { code: "AG07", name: "HOD and Faculty Room", block: "A-Block", floor: "Ground Floor", type: "staff", category: "Staff Room" },
+            { code: "AG08", name: "HOD and Faculty Room", block: "A-Block", floor: "Ground Floor", type: "staff", category: "Staff Room" },
+            { code: "AG03", name: "MBA Principal Room", block: "A-Block", floor: "Ground Floor", type: "admin", category: "Administration" },
+            { code: "AG05", name: "Electrical Machines Lab", block: "A-Block", floor: "Ground Floor", type: "lab", category: "Laboratory" },
+            { code: "AG96", name: "Engineering Chemistry Lab", block: "A-Block", floor: "Ground Floor", type: "lab", category: "Laboratory" },
+            { code: "AG29", name: "Secretary Room (Committee Hall)", block: "A-Block", floor: "Ground Floor", type: "admin", category: "Administration" },
+            { code: "AG80", name: "Ladies Washroom", block: "A-Block", floor: "Ground Floor", type: "restroom", category: "Restroom", gender: "female", description: "Ladies Waiting Room" },
+            { code: "INFO-DESK", name: "Information Desk", block: "A-Block", floor: "Ground Floor", type: "admin", category: "Information", description: "Opposite Painting Area" },
+            
+            // A-Block First Floor
+            { code: "AF25", name: "Physics Lab", block: "A-Block", floor: "1st Floor", type: "lab", category: "Laboratory" },
+            { code: "AF26", name: "Electrical & Electronics Lab", block: "A-Block", floor: "1st Floor", type: "lab", category: "Laboratory" },
+            { code: "AF27", name: "Classroom", block: "A-Block", floor: "1st Floor", type: "classroom", category: "Classroom" },
+            { code: "AF28", name: "Classroom", block: "A-Block", floor: "1st Floor", type: "classroom", category: "Classroom" },
+            { code: "AF29", name: "Classroom", block: "A-Block", floor: "1st Floor", type: "classroom", category: "Classroom" },
+            { code: "AF30", name: "Classroom", block: "A-Block", floor: "1st Floor", type: "classroom", category: "Classroom" },
+            { code: "AF24", name: "Gents Washroom", block: "A-Block", floor: "1st Floor", type: "restroom", category: "Restroom", gender: "male", description: "Opposite AF24" },
+            
+            // A-Block Second Floor
+            { code: "AS01", name: "Classroom (Locked)", block: "A-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "AS02", name: "Classroom (Locked)", block: "A-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "AS03", name: "Classroom (Locked)", block: "A-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "AS04", name: "Classroom (Locked)", block: "A-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "AS05", name: "Classroom (Locked)", block: "A-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "AS21", name: "Gents Washroom", block: "A-Block", floor: "2nd Floor", type: "restroom", category: "Restroom", gender: "male", description: "Opposite AS21" },
+            { code: "AS08", name: "Seminar Hall", block: "A-Block", floor: "2nd Floor", type: "seminar", category: "Seminar Hall" },
+            { code: "AS09", name: "Seminar Hall", block: "A-Block", floor: "2nd Floor", type: "seminar", category: "Seminar Hall" },
+            { code: "AS13", name: "Classroom", block: "A-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "AS14", name: "Classroom", block: "A-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "AS17", name: "ECE Department Staff Room", block: "A-Block", floor: "2nd Floor", type: "staff", category: "Staff Room" },
+            { code: "AS16", name: "Classroom", block: "A-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "AS18", name: "Classroom", block: "A-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "AS19", name: "Academic Director Room", block: "A-Block", floor: "2nd Floor", type: "admin", category: "Administration" },
+            
+            // A-Block Additional Rooms
+            { code: "AGR03", name: "Exam Cell", block: "A-Block", floor: "Ground Floor", type: "admin", category: "Administration" },
+            { code: "AGR02", name: "Sports Room", block: "A-Block", floor: "Ground Floor", type: "admin", category: "Administration" },
+            { code: "AGR01", name: "Admissions Office", block: "A-Block", floor: "Ground Floor", type: "admin", category: "Administration" },
+            { code: "STATIONARY", name: "Stationary Room", block: "A-Block", floor: "Ground Floor", type: "admin", category: "Administration", description: "Opposite beside Admissions Office" },
+
+            // B-Block
+            { code: "SUDHARMA", name: "Sudharma Seminar Hall", block: "B-Block", floor: "Ground Floor", type: "seminar", category: "Seminar Hall", description: "Opposite parking area, beside canteen" },
+
             // C-Block Ground Floor
             { code: "CG01", name: "Board Room", block: "C-Block", floor: "Ground Floor", type: "seminar", category: "Meeting Room" },
             { code: "CG02", name: "Computer Lab", block: "C-Block", floor: "Ground Floor", type: "lab", category: "Laboratory" },
@@ -375,15 +431,28 @@
             { code: "CF08", name: "B-Tech Staff Room", block: "C-Block", floor: "1st Floor", type: "staff", category: "Staff Room" },
             { code: "CF09", name: "Classroom", block: "C-Block", floor: "1st Floor", type: "classroom", category: "Classroom" },
             { code: "CF10", name: "Classroom", block: "C-Block", floor: "1st Floor", type: "classroom", category: "Classroom" },
-            { code: "CF-11", name: "Ladies Washroom", block: "C-Block", floor: "1st Floor", type: "restroom", category: "Restroom", gender: "female" },
+            { code: "CF11", name: "Ladies Washroom", block: "C-Block", floor: "1st Floor", type: "restroom", category: "Restroom", gender: "female", description: "Girls Washroom on 1st Floor" },
 
             // C-Block Second Floor
-            { code: "CS-11", name: "Drawing Hall", block: "C-Block", floor: "2nd Floor", type: "lab", category: "Laboratory" },
-            { code: "CS-10", name: "Classroom", block: "C-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
-            { code: "CS-09", name: "Classroom", block: "C-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "CS11", name: "Drawing Hall", block: "C-Block", floor: "2nd Floor", type: "lab", category: "Laboratory", description: "Drawing Hall Lab" },
+            { code: "CS01", name: "Classroom (Locked)", block: "C-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "CS02", name: "Classroom (Locked)", block: "C-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "CS03", name: "Classroom (Locked)", block: "C-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "CS04", name: "Classroom (Locked)", block: "C-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "CS05", name: "Classroom (Locked)", block: "C-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "CS06", name: "Classroom (Locked)", block: "C-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "CS07", name: "Classroom (Locked)", block: "C-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "CS10", name: "Classroom", block: "C-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "CS09", name: "Classroom", block: "C-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
             { code: "CS08", name: "Tutorial Room", block: "C-Block", floor: "2nd Floor", type: "seminar", category: "Study Room" },
             { code: "CS03", name: "Computer Lab", block: "C-Block", floor: "2nd Floor", type: "lab", category: "Laboratory" },
             { code: "CS02", name: "Computer Lab", block: "C-Block", floor: "2nd Floor", type: "lab", category: "Laboratory" },
+
+            // D-Block Ground Floor
+            { code: "DG01", name: "Workshop Lab", block: "D-Block", floor: "Ground Floor", type: "workshop", category: "Workshop" },
+            { code: "DG02", name: "Concrete Technology Lab", block: "D-Block", floor: "Ground Floor", type: "lab", category: "Laboratory" },
+            { code: "DG0", name: "Civil Department Room", block: "D-Block", floor: "Ground Floor", type: "staff", category: "Staff Room" },
+            { code: "DG03", name: "FM & HM Lab", block: "D-Block", floor: "Ground Floor", type: "lab", category: "Laboratory" },
 
             // D-Block First Floor
             { code: "DF01", name: "Classroom", block: "D-Block", floor: "1st Floor", type: "classroom", category: "Classroom" },
@@ -395,6 +464,7 @@
             { code: "DS01", name: "Classroom", block: "D-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
             { code: "DS02", name: "Classroom", block: "D-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
             { code: "DS03", name: "Classroom", block: "D-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "DS04", name: "S & H Department Staff Room", block: "D-Block", floor: "2nd Floor", type: "staff", category: "Staff Room" },
 
             // E-Block Ground Floor
             { code: "EG01", name: "Vice Principal Room", block: "E-Block", floor: "Ground Floor", type: "vice-principal", category: "Administration" },
@@ -407,12 +477,11 @@
             // E-Block Second Floor
             { code: "ES01", name: "Classroom", block: "E-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
             { code: "ES02", name: "Classroom", block: "E-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
-            { code: "ES03H", name: "Classroom", block: "E-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
+            { code: "ES04", name: "Classroom", block: "E-Block", floor: "2nd Floor", type: "classroom", category: "Classroom" },
             { code: "ES03", name: "S & H Department Staff Room", block: "E-Block", floor: "2nd Floor", type: "staff", category: "Staff Room" },
 
             // Additional Important Locations
-            { code: "CANTEEN", name: "College Canteen", block: "Main Campus", floor: "Ground Floor", type: "canteen", category: "Food Court", description: "Near main gate beside parking area" },
-            { code: "SUDHARMA", name: "Sudharma Seminar Hall", block: "Main Campus", floor: "Ground Floor", type: "seminar", category: "Seminar Hall", description: "Beside canteen near main gate" }
+            { code: "CANTEEN", name: "College Canteen", block: "Main Campus", floor: "Ground Floor", type: "canteen", category: "Food Court", description: "Near main gate beside parking area" }
         ];
 
         // Search functionality
@@ -539,7 +608,15 @@
             }
             
             // Block specific directions
-            if (room.block === "C-Block") {
+            if (room.block === "A-Block") {
+                steps.push("🚶‍♂️ Walk straight from main entrance");
+                steps.push("↪️ Turn right towards MBA & MCA block");
+                steps.push("🏛️ Enter A-Block building");
+            } else if (room.block === "B-Block") {
+                steps.push("🚶‍♂️ Walk towards parking area");
+                steps.push("📍 Sudharma Seminar Hall is beside canteen");
+                steps.push("🏛️ Enter B-Block building");
+            } else if (room.block === "C-Block") {
                 steps.push("🚶‍♂️ Walk straight for 50 meters");
                 steps.push("↪️ Turn right at the central corridor");
                 steps.push("🏛️ Enter C-Block building");
@@ -547,12 +624,6 @@
                 steps.push("🚶‍♂️ Walk straight for 30 meters");
                 steps.push("↩️ Turn left at the fountain");
                 steps.push("🏛️ Enter D-Block building");
-                
-                // Special direction for D-Block men's washroom
-                if (room.code === "DB-MEN") {
-                    steps.push("📶 Go to 1st Floor");
-                    steps.push("📍 Located beside Gallery Hall (DF03)");
-                }
             } else if (room.block === "E-Block") {
                 steps.push("🚶‍♂️ Walk straight for 70 meters");
                 steps.push("↪️ Turn right after C-Block");
@@ -571,10 +642,14 @@
             // Final approach
             if (room.code === "DB-MEN") {
                 steps.push("🎯 Men's washroom is located beside the Gallery Hall");
-            } else if (room.code === "CF-11") {
+            } else if (room.code === "CF11") {
                 steps.push("🎯 Ladies washroom is on the 1st Floor corridor");
             } else if (room.code === "CF-1/2") {
                 steps.push("🎯 Ladies washroom is on the Ground Floor near entrance");
+            } else if (room.code === "AF24") {
+                steps.push("🎯 Gents washroom is opposite AF24");
+            } else if (room.code === "AS21") {
+                steps.push("🎯 Gents washroom is opposite AS21");
             } else {
                 steps.push(`🎯 Look for ${room.code} on the ${room.floor}`);
             }
@@ -683,7 +758,9 @@
                 'library': 'Library',
                 'director': 'Director & Administration',
                 'vice-principal': 'Vice Principal',
-                'canteen': 'Canteen & Food Court'
+                'canteen': 'Canteen & Food Court',
+                'admin': 'Administration',
+                'workshop': 'Workshops'
             };
             return names[category] || category;
         }
